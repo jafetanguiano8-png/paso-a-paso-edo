@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Paso a Paso — Ecuaciones Diferenciales</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pizarron: #23392E;
+    --pizarron-borde: #16261E;
+    --tiza-blanca: #F4F1E8;
+    --tiza-amarilla: #E8C14A;
+    --tiza-azul: #7FB2E5;
+    --tiza-coral: #E38C7A;
+    --madera: #7A5C3E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--pizarron);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.03), transparent 40%),
+      radial-gradient(ellipse at 80% 90%, rgba(255,255,255,0.025), transparent 45%);
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--tiza-blanca);
+    display: flex;
+    justify-content: center;
+    padding: 0 0 60px 0;
+  }
+
+  .marco {
+    width: 100%;
+    max-width: 560px;
+    padding: 28px 20px 40px;
+  }
+
+  header {
+    text-align: left;
+    border-bottom: 3px dashed rgba(244,241,232,0.25);
+    padding-bottom: 18px;
+    margin-bottom: 26px;
+  }
+
+  h1 {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    font-size: 2.1rem;
+    margin: 0 0 6px;
+    color: var(--tiza-amarilla);
+    letter-spacing: 0.3px;
+  }
+
+  header p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: rgba(244,241,232,0.65);
+    line-height: 1.5;
+  }
+
+  .enunciado {
+    font-size: 0.85rem;
+    color: rgba(244,241,232,0.6);
+    margin: 18px 0 8px;
+  }
+
+  .forma {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--tiza-azul);
+    background: rgba(127,178,229,0.08);
+    border: 1px solid rgba(127,178,229,0.25);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+  }
+
+  .metodo-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .metodo-btn {
+    flex: 1 1 30%;
+    background: transparent;
+    border: 1.5px solid rgba(244,241,232,0.25);
+    color: rgba(244,241,232,0.65);
+    border-radius: 8px;
+    padding: 9px 6px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .metodo-btn:hover { border-color: rgba(244,241,232,0.45); }
+
+  .metodo-btn.activo {
+    border-color: var(--tiza-amarilla);
+    color: var(--tiza-amarilla);
+    background: rgba(232,193,74,0.1);
+  }
+
+  form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    background: rgba(244,241,232,0.06);
+    border: 1.5px solid rgba(244,241,232,0.3);
+    border-radius: 8px;
+    padding: 13px 14px;
+    color: var(--tiza-blanca);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  input[type="text"]:focus {
+    border-color: var(--tiza-amarilla);
+  }
+
+  input[type="text"]::placeholder {
+    color: rgba(244,241,232,0.35);
+  }
+
+  button {
+    background: var(--tiza-amarilla);
+    color: #2B2107;
+    border: none;
+    border-radius: 8px;
+    padding: 0 20px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.15s ease;
+  }
+
+  button:active { transform: scale(0.96); }
+  button:hover { background: #f0cf6a; }
+  button:disabled { opacity: 0.5; cursor: default; }
+
+  .ejemplos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .ejemplo-chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    background: transparent;
+    border: 1px solid rgba(244,241,232,0.25);
+    color: rgba(244,241,232,0.75);
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  .ejemplo-chip:hover { border-color: var(--tiza-azul); color: var(--tiza-azul); }
+  .ejemplo-chip.activo {
+    border-color: var(--tiza-amarilla);
+    color: var(--tiza-amarilla);
+    background: rgba(232,193,74,0.1);
+  }
+
+  #estado {
+    font-size: 0.9rem;
+    color: var(--tiza-coral);
+    margin: 6px 0 20px;
+    line-height: 1.5;
+    display: none;
+  }
+
+  #resultado { display: none; }
+
+  .tipo-badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--pizarron);
+    background: var(--tiza-azul);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 18px;
+  }
+
+  .paso {
+    position: relative;
+    padding: 16px 18px 16px 52px;
+    margin-bottom: 14px;
+    background: rgba(244,241,232,0.045);
+    border: 1px solid rgba(244,241,232,0.14);
+    border-radius: 10px;
+  }
+
+  .paso-numero {
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(232,193,74,0.15);
+    border: 1.5px solid var(--tiza-amarilla);
+    color: var(--tiza-amarilla);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .paso-titulo {
+    font-size: 0.78rem;
+    color: rgba(244,241,232,0.55);
+    margin-bottom: 8px;
+    text-transform: none;
+  }
+
+  .paso-math {
+    font-size: 1.08rem;
+    overflow-x: auto;
+  }
+
+  .solucion-final {
+    margin-top: 22px;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(227,140,122,0.1);
+    border: 1.5px solid var(--tiza-coral);
+  }
+
+  .solucion-final .paso-titulo { color: var(--tiza-coral); }
+
+  .solucion-final .paso-math { font-size: 1.25rem; }
+
+  footer {
+    margin-top: 36px;
+    font-size: 0.78rem;
+    color: rgba(244,241,232,0.4);
+    line-height: 1.6;
+    border-top: 1px solid rgba(244,241,232,0.12);
+    padding-top: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="marco">
+  <header>
+    <h1>Paso a paso</h1>
+    <p>Escribe el lado derecho de tu ecuación diferencial de primer orden y mira cómo se resuelve, un paso a la vez.</p>
+  </header>
+
+  <div class="enunciado">Escribe solo el lado derecho, o la ecuación completa:</div>
+  <div class="forma">dy/dx = [...]  &nbsp;o&nbsp;  dy/dx + 3*x*y = 6*x</div>
+
+  <div class="metodo-selector">
+    <button type="button" class="metodo-btn activo" data-metodo="auto">Automático</button>
+    <button type="button" class="metodo-btn" data-metodo="separable">Separables</button>
+    <button type="button" class="metodo-btn" data-metodo="lineal">Factor integrante</button>
+    <button type="button" class="metodo-btn" data-metodo="homogenea">Homogénea</button>
+    <button type="button" class="metodo-btn" data-metodo="bernoulli">Bernoulli</button>
+    <button type="button" class="metodo-btn" data-metodo="exacta">Exacta</button>
+  </div>
+
+  <form id="form-eq">
+    <input type="text" id="input-eq" placeholder="ej. x*y   ó   dy/dx + 3*x*y = 6*x" autocomplete="off">
+    <button type="submit" id="btn-resolver">Resolver</button>
+  </form>
+
+  <div class="ejemplos">
+    <button type="button" class="ejemplo-chip" data-eq="x*y" data-metodo="auto">x·y</button>
+    <button type="button" class="ejemplo-chip" data-eq="dy/dx - y = x" data-metodo="auto">lineal: y'−y=x</button>
+    <button type="button" class="ejemplo-chip" data-eq="(x^2+y^2)/(x*y)" data-metodo="auto">homogénea</button>
+    <button type="button" class="ejemplo-chip" data-eq="dy/dx + y/x = x*y^2" data-metodo="auto">bernoulli</button>
+    <button type="button" class="ejemplo-chip" data-eq="2*x*y + (x^2+3*y^2)*dy/dx = 0" data-metodo="exacta">exacta</button>
+  </div>
+
+  <div id="estado"></div>
+
+  <div id="resultado">
+    <div class="tipo-badge" id="tipo-badge"></div>
+    <div id="lista-pasos"></div>
+  </div>
+
+  <footer>
+    Prototipo — resuelve ecuaciones <strong>separables</strong>, <strong>lineales</strong>,
+    <strong>homogéneas</strong>, <strong>Bernoulli</strong> y <strong>exactas</strong>.
+    Para exactas, escribe la ecuación completa como M + N·dy/dx = 0.
+  </footer>
+</div>
+
+<script>
+const form = document.getElementById('form-eq');
+const input = document.getElementById('input-eq');
+const btn = document.getElementById('btn-resolver');
+const estado = document.getElementById('estado');
+const resultado = document.getElementById('resultado');
+const listaPasos = document.getElementById('lista-pasos');
+const tipoBadge = document.getElementById('tipo-badge');
+
+let metodoSeleccionado = 'auto';
+
+async function resolverEcuacion() {
+  const ecuacion = input.value.trim();
+  if (!ecuacion) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Resolviendo...';
+  estado.style.display = 'none';
+  resultado.style.display = 'none';
+  listaPasos.innerHTML = '';
+
+  try {
+    const resp = await fetch('/resolver', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ecuacion, metodo: metodoSeleccionado })
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      estado.textContent = data.detail || 'No se pudo resolver esta ecuación.';
+      estado.style.display = 'block';
+      estado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    tipoBadge.textContent = data.tipo;
+
+    data.pasos.forEach((paso, i) => {
+      const div = document.createElement('div');
+      div.className = 'paso';
+      div.innerHTML = `
+        <div class="paso-numero">${i + 1}</div>
+        <div class="paso-titulo">${paso.titulo.replace(/^\d+\.\s*/, '')}</div>
+        <div class="paso-math"></div>
+      `;
+      listaPasos.appendChild(div);
+      katex.render(paso.contenido, div.querySelector('.paso-math'), { throwOnError: false, displayMode: true });
+    });
+
+    const finalDiv = document.createElement('div');
+    finalDiv.className = 'solucion-final';
+    finalDiv.innerHTML = `<div class="paso-titulo">Solución</div><div class="paso-math"></div>`;
+    listaPasos.appendChild(finalDiv);
+    katex.render(data.solucion, finalDiv.querySelector('.paso-math'), { throwOnError: false, displayMode: true });
+
+    resultado.style.display = 'block';
+    resultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (err) {
+    estado.textContent = 'Ocurrió un error de conexión con el servidor.';
+    estado.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Resolver';
+  }
+}
+
+document.querySelectorAll('.metodo-btn').forEach(mbtn => {
+  mbtn.addEventListener('click', () => {
+    document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('activo'));
+    mbtn.classList.add('activo');
+    metodoSeleccionado = mbtn.dataset.metodo;
+    if (input.value.trim()) {
+      resolverEcuacion();
+    }
+  });
+});
+
+document.querySelectorAll('.ejemplo-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.ejemplo-chip').forEach(c => c.classList.remove('activo'));
+    chip.classList.add('activo');
+    const metodoDelEjemplo = chip.dataset.metodo || 'auto';
+    document.querySelectorAll('.metodo-btn').forEach(b => b.classList.remove('activo'));
+    document.querySelector(`.metodo-btn[data-metodo="${metodoDelEjemplo}"]`).classList.add('activo');
+    metodoSeleccionado = metodoDelEjemplo;
+    input.value = chip.dataset.eq;
+    resolverEcuacion();
+  });
+});
+
+input.addEventListener('input', () => {
+  document.querySelectorAll('.ejemplo-chip').forEach(c => c.classList.remove('activo'));
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  resolverEcuacion();
+});
+</script>
+</body>
+</html>
