@@ -158,7 +158,15 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
+  }
+
+  .grupo-ejemplos { margin-bottom: 28px; }
+
+  .ejemplos-titulo {
+    font-size: 0.78rem;
+    color: rgba(244,241,232,0.55);
+    margin: 0 0 8px;
   }
 
   .ejemplo-chip {
@@ -263,11 +271,15 @@
 <div class="marco">
   <header>
     <h1>Paso a paso</h1>
-    <p>Escribe el lado derecho de tu ecuación diferencial de primer orden y mira cómo se resuelve, un paso a la vez.</p>
+    <p>Escribe tu ecuación diferencial (de primer orden o de orden superior) y mira cómo se resuelve, un paso a la vez.</p>
   </header>
 
-  <div class="enunciado">Escribe solo el lado derecho, o la ecuación completa:</div>
-  <div class="forma">dy/dx = [...]  &nbsp;o&nbsp;  dy/dx + 3*x*y = 6*x</div>
+  <div class="enunciado">Formatos que entiende la app:</div>
+  <div class="forma">
+    <b>1.er orden:</b> x*y &nbsp;ó&nbsp; dy/dx + 3*x*y = 6*x<br>
+    <b>Orden superior:</b> y'' - 3*y' + 2*y = 0 &nbsp;ó&nbsp; (D^2 - 3*D + 2)*y = 0<br>
+    <span style="opacity:.7">(para orden superior deja el método en Automático)</span>
+  </div>
 
   <div class="metodo-selector">
     <button type="button" class="metodo-btn activo" data-metodo="auto">Automático</button>
@@ -279,16 +291,27 @@
   </div>
 
   <form id="form-eq">
-    <input type="text" id="input-eq" placeholder="ej. x*y   ó   dy/dx + 3*x*y = 6*x" autocomplete="off">
+    <input type="text" id="input-eq" placeholder="ej. x*y   ó   y'' - 3*y' + 2*y = 0" autocomplete="off">
     <button type="submit" id="btn-resolver">Resolver</button>
   </form>
 
+  <div class="grupo-ejemplos">
+  <div class="ejemplos-titulo">Ejemplos de primer orden</div>
   <div class="ejemplos">
     <button type="button" class="ejemplo-chip" data-eq="x*y" data-metodo="auto">x·y</button>
     <button type="button" class="ejemplo-chip" data-eq="dy/dx - y = x" data-metodo="auto">lineal: y'−y=x</button>
     <button type="button" class="ejemplo-chip" data-eq="(x^2+y^2)/(x*y)" data-metodo="auto">homogénea</button>
     <button type="button" class="ejemplo-chip" data-eq="dy/dx + y/x = x*y^2" data-metodo="auto">bernoulli</button>
     <button type="button" class="ejemplo-chip" data-eq="2*x*y + (x^2+3*y^2)*dy/dx = 0" data-metodo="exacta">exacta</button>
+  </div>
+
+  <div class="ejemplos-titulo">Ejemplos de orden superior (ecuación característica)</div>
+  <div class="ejemplos">
+    <button type="button" class="ejemplo-chip" data-eq="y'' - 3*y' + 2*y = 0" data-metodo="auto">raíces distintas</button>
+    <button type="button" class="ejemplo-chip" data-eq="y'' - 4*y' + 4*y = 0" data-metodo="auto">raíces repetidas</button>
+    <button type="button" class="ejemplo-chip" data-eq="y'' + 2*y' + 5*y = 0" data-metodo="auto">raíces complejas</button>
+    <button type="button" class="ejemplo-chip" data-eq="(D - 1)^2*(D + 2)*y = 0" data-metodo="auto">con operador D</button>
+  </div>
   </div>
 
   <div id="estado"></div>
@@ -299,9 +322,11 @@
   </div>
 
   <footer>
-    Prototipo — resuelve ecuaciones <strong>separables</strong>, <strong>lineales</strong>,
-    <strong>homogéneas</strong>, <strong>Bernoulli</strong> y <strong>exactas</strong>.
-    Para exactas, escribe la ecuación completa como M + N·dy/dx = 0.
+    Primer orden: <strong>separables</strong>, <strong>lineales</strong>,
+    <strong>homogéneas</strong>, <strong>Bernoulli</strong> y <strong>exactas</strong>
+    (para exactas, escribe la ecuación como M + N·dy/dx = 0).<br>
+    Orden superior: <strong>homogéneas de coeficientes constantes</strong> con operador D
+    y ecuación característica. Próximamente: coeficientes indeterminados y variación de parámetros.
   </footer>
 </div>
 

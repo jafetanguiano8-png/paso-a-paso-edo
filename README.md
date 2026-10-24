@@ -62,6 +62,31 @@ Archivos:
 - `main.py` — el motor matemático (Python + SymPy).
 - `static/index.html` — la interfaz visual (una sola página con KaTeX).
 
+## Unidad 2: ecuaciones de orden superior
+
+Para ecuaciones lineales de coeficientes constantes de cualquier orden:
+
+- **Etapa 1 (disponible)**: homogéneas, con el operador D y la ecuación
+  característica, mostrando los tres casos (raíces reales distintas,
+  repetidas y complejas conjugadas) y verificando la solución con SymPy.
+- Etapa 2 (próxima): no homogéneas por coeficientes indeterminados (con resonancia).
+- Etapa 3: variación de parámetros.
+- Etapa 4: validación y modelos físicos (masa-resorte, circuito RLC).
+
+Formas de escribir la ecuación (se pueden mezclar):
+
+```
+y'' - 3*y' + 2*y = 0
+y''' - y'' - 4*y' + 4*y = 0
+y^(4) - y = 0
+d2y/dx2 + 4*y = 0
+(D^2 - 3*D + 2)*y = 0
+(D - 1)^2*(D + 2)*y = 0
+```
+
+Archivos: `orden_superior.py` (motor de esta unidad) y `modelos.py`
+(estructuras de datos compartidas).
+
 ## Siguientes pasos sugeridos
 
 1. Agregar más tipos: ecuaciones reducibles a homogéneas, factores

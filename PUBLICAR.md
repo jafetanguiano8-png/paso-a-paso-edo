@@ -42,7 +42,7 @@ Ahora conecta con tu repositorio (reemplaza `TU-USUARIO` por tu usuario
 de GitHub):
 
 ```bash
-git remote add origin https://github.com/TU-USUARIO/paso-a-paso-edo.git
+git remote add origin https://github.com/jafetanguiano8-png/paso-a-paso-edo.git
 git push -u origin main
 ```
 
@@ -54,6 +54,18 @@ contraseña normal aquí. Necesitas un "token":
 3. Ponle un nombre (ej. "mi laptop"), marca la casilla **repo**
 4. **Generate token** y **copia el token** (solo se muestra una vez)
 5. Cuando la terminal pida contraseña, pega ese token
+
+
+USUARIO:  laptop-app-ed
+
+TOKEN:   
+
+
+PAGINA PUBLICADA
+https://paso-a-paso-edo.onrender.com/
+
+
+
 
 ---
 

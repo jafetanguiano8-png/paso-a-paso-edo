@@ -17,6 +17,9 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+from modelos import Paso, Respuesta
+from orden_superior import es_orden_superior, resolver_orden_superior
 import sympy as sp
 from sympy.parsing.sympy_parser import (
     parse_expr,
@@ -37,15 +40,6 @@ class Solicitud(BaseModel):
     metodo: str = "auto"  # "auto", "separable" o "lineal"
 
 
-class Paso(BaseModel):
-    titulo: str
-    contenido: str  # LaTeX
-
-
-class Respuesta(BaseModel):
-    tipo: str
-    pasos: list[Paso]
-    solucion: str
 
 
 def _parse(texto: str):
@@ -467,6 +461,11 @@ def construir_exacta(M, N):
 
 @app.post("/resolver", response_model=Respuesta)
 def resolver(solicitud: Solicitud):
+    # Ecuaciones de orden superior (derivadas segundas o mayores, operador D)
+    # se resuelven en otro modulo
+    if es_orden_superior(solicitud.ecuacion):
+        return resolver_orden_superior(solicitud.ecuacion, solicitud.metodo)
+
     try:
         rhs, M, N = analizar_ecuacion(solicitud.ecuacion)
     except ValueError as e:
